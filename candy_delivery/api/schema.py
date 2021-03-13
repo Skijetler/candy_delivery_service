@@ -1,0 +1,35 @@
+import enum
+from typing import List
+from pydantic import BaseModel
+
+
+class CourierType(str, enum.Enum):
+    foot = "foot"
+    bike = "bike"
+    car  = "car"
+
+class Courier(BaseModel):
+    id: int
+    courier_type: CourierType
+    regions: List[int]
+    working_hours: List[str]
+    rating: float
+    earnings: int
+    occupied: bool = False
+    orders: List[Order]
+
+    class Config:
+        orm_mode = True
+
+class Order(BaseModel):
+    id: int
+    weight: float
+    region: int
+    delivery_hours: List[str]
+    assign_time: str
+    completed: bool = False
+    completed_time: str
+    courier_id: int
+
+    class Config:
+        orm_mode = True
