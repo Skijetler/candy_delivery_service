@@ -6,7 +6,7 @@ from pathlib import Path
 from alembic.config import Config
 
 
-DEFAULT_DB_URL = 'sqlite:///database.db'
+DEFAULT_DB_URL = 'postgresql://candy_man:2fkI2Rd39C@localhost/candy_service'
 
 PROJECT_PATH = Path(__file__).parent.parent.resolve()
 

@@ -32,10 +32,11 @@ class Courier(Base):
     courier_type    = Column(Enum(CourierType))
     regions         = Column(ARRAY(Integer))
     working_hours   = Column(ARRAY(String))
-    rating          = Column(Numeric)
-    earnings        = Column(Integer)
+    rating          = Column(Numeric, default=0)
+    earnings        = Column(Integer, default=0)
     occupied        = Column(Boolean, default=False)
-    orders          = relationship("Order")
+
+    orders          = relationship("Order", back_populates="courier")
 
 class Order(Base):
     __tablename__ = 'orders'
@@ -48,3 +49,5 @@ class Order(Base):
     completed       = Column(Boolean, default=False)
     completed_time  = Column(String)
     courier_id      = Column(Integer, ForeignKey('couriers.id'))
+
+    courier = relationship("Courier", back_populates="orders")
