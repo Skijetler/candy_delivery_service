@@ -1,6 +1,7 @@
 import uvicorn
 import argparse
 from fastapi import FastAPI, Depends
+from fastapi_sqlalchemy import DBSessionMiddleware
 from configargparse import ArgumentParser
 
 from candy_delivery.utils.argparse_u import positive_int
@@ -28,30 +29,18 @@ group.add_argument('--db-url', type=str, default=str(DEFAULT_DB_URL),
                    help='URL to use to connect to the database')
 
 
-
-def main():   
+def main():
     args = parser.parse_args()
 
-    Session = create_db_session(args.db_url)
-
-    def get_db():
-        db = Session()
-        try:
-            yield db
-        finally:
-            db.close()
-
-    
     app = FastAPI()
+    app.add_middleware(DBSessionMiddleware, db_url=args.db_url)
 
     app.include_router(couriers.router,
                        prefix="/couriers",
-                       tags=["courier"], 
-                       dependencies=[Depends(get_db)])
+                       tags=["courier"])
     app.include_router(orders.router,
                        prefix="/orders",
-                       tags=["order"], 
-                       dependencies=[Depends(get_db)])
+                       tags=["order"])
 
     uvicorn.run(app, host=args.address, port=args.port)
 
