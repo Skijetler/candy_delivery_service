@@ -8,31 +8,50 @@ class CourierType(str, enum.Enum):
     bike = "bike"
     car  = "car"
 
-Courier_rel = ForwardRef("Courier")
-
-class Order(BaseModel):
-    id: int
+# Order
+class OrderPostRequest(BaseModel):
+    order_id: int
     weight: float
     region: int
     delivery_hours: List[str]
+
+class Order(OrderPostRequest):
     assign_time: str
     completed: bool = False
     completed_time: str
     courier_id: int
-    courier: Courier_rel
+    courier: 'Courier'
 
     class Config:
         orm_mode = True
 
-class Courier(BaseModel):
-    id: int
+# Courier
+class CourierPostRequest(BaseModel):
+    courier_id: int
     courier_type: CourierType
     regions: List[int]
     working_hours: List[str]
-    rating: float = 0
-    earnings: int = 0
-    occupied: bool = False
+
+class CourierGetResponse(CourierPostRequest):
+    rating: float
+    earnings: int
+
+class CourierPathRequest(BaseModel):
+    courier_type: CourierType
+    regions: List[int]
+    working_hours: List[str]
+
+class Courier(CourierGetResponse):
     orders: List[Order] = []
 
     class Config:
         orm_mode = True
+
+Order.update_forward_refs()
+
+# Lists
+class CouriersPostRequest(BaseModel):
+    data: List[CourierPostRequest]
+
+class OrdersPostRequest(BaseModel):
+    data: List[OrderPostRequest]

@@ -10,7 +10,8 @@ def get_order(db: Session, order_id: int):
     return db.query(Order_db).filter(Order_db.id == order_id).first()
 
 def create_courier(db: Session, courier: Courier_schema):
-    db_courier = Courier_db(courier_type=courier.courier_type,
+    db_courier = Courier_db(id=courier.courier_id,
+                            courier_type=courier.courier_type,
                             regions=courier.regions,
                             working_hours=courier.working_hours
                             )
@@ -20,9 +21,10 @@ def create_courier(db: Session, courier: Courier_schema):
     return db_courier
 
 def create_order(db: Session, order: Order_schema):
-    db_order = Order_db(weight=order.weight,
+    db_order = Order_db(id=order.order_id,
+                        weight=order.weight,
                         region=order.region,
-                        delivery_hours=order.delivery_hours,
+                        delivery_hours=order.delivery_hours
                         )
     db.add(db_order)
     db.commit()

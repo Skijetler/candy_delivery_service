@@ -34,7 +34,6 @@ class Courier(Base):
     working_hours   = Column(ARRAY(String))
     rating          = Column(Numeric, default=0)
     earnings        = Column(Integer, default=0)
-    occupied        = Column(Boolean, default=False)
 
     orders          = relationship("Order", back_populates="courier")
 
