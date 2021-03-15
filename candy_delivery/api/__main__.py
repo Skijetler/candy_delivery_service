@@ -6,7 +6,6 @@ from configargparse import ArgumentParser
 
 from candy_delivery.utils.argparse_u import positive_int
 from candy_delivery.utils.db import DEFAULT_DB_URL
-from candy_delivery.api.db_session import create_db_session
 from candy_delivery.api.routers import couriers, orders
 
 
