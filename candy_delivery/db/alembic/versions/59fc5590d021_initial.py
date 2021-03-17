@@ -1,8 +1,8 @@
 """Initial
 
-Revision ID: c7c0aa7565f7
+Revision ID: 59fc5590d021
 Revises: 
-Create Date: 2021-03-15 19:12:00.480275
+Create Date: 2021-03-17 20:34:48.711620
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c7c0aa7565f7'
+revision = '59fc5590d021'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,9 +32,9 @@ def upgrade():
     sa.Column('weight', sa.Numeric(), nullable=True),
     sa.Column('region', sa.Integer(), nullable=True),
     sa.Column('delivery_hours', sa.ARRAY(sa.String()), nullable=True),
-    sa.Column('assign_time', sa.String(), nullable=True),
+    sa.Column('assign_time', sa.DateTime(), nullable=True),
     sa.Column('completed', sa.Boolean(), nullable=True),
-    sa.Column('completed_time', sa.String(), nullable=True),
+    sa.Column('completed_time', sa.DateTime(), nullable=True),
     sa.Column('courier_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['courier_id'], ['couriers.id'], name=op.f('fk__orders__courier_id__couriers')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk__orders'))

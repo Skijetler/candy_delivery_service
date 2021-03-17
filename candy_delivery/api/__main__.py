@@ -1,11 +1,16 @@
 import uvicorn
 import argparse
-from fastapi import FastAPI, Depends
+import os
+from sys import argv
+from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi_sqlalchemy import DBSessionMiddleware
 from configargparse import ArgumentParser
+from setproctitle import setproctitle
 
 from candy_delivery.utils.argparse_u import positive_int
 from candy_delivery.utils.db import DEFAULT_DB_URL
+from candy_delivery.api.validation_handler import RequestValidationHandler
 from candy_delivery.api.routers import couriers, orders
 
 
@@ -31,8 +36,12 @@ group.add_argument('--db-url', type=str, default=str(DEFAULT_DB_URL),
 def main():
     args = parser.parse_args()
 
+    # выводит в списке процессов название программы
+    setproctitle(os.path.basename(argv[0]))
+
     app = FastAPI()
     app.add_middleware(DBSessionMiddleware, db_url=args.db_url)
+    app.add_exception_handler(RequestValidationError, handler=RequestValidationHandler)
 
     app.include_router(couriers.router,
                        prefix="/couriers",
