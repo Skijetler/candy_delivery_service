@@ -26,7 +26,7 @@ async def assign_orders(courier_id: schema.CourierId):
     if courier_db is None:
         return ORJSONResponse(status_code=status.HTTP_400_BAD_REQUEST)
     
-    orders = await crud.get_valid_orders(db=db, regions=courier_db.regions, working_hours=courier_db.working_hours, max_weight=schema.get_max_weight(courier_db.courier_type))
+    orders = await crud.get_valid_orders(db=db.session, regions=courier_db.regions, working_hours=courier_db.working_hours, max_weight=schema.get_max_weight(courier_db.courier_type))
     
     if len(orders) == 0:
         return ORJSONResponse(content=resp.dict(exclude={'assign_time'}),status_code=status.HTTP_200_OK)
@@ -36,7 +36,7 @@ async def assign_orders(courier_id: schema.CourierId):
     
     for order in orders:
         await crud.assign_order(db=db.session, order=order, assign_time=assign_time, courier_id=courier_db.id)
-        resp.orders.append(schema.Id(id=order.order_id))
+        resp.orders.append(schema.Id(id=order.id))
     
     return resp
 
@@ -54,12 +54,12 @@ async def complete_order(completed_order: schema.OrderPostCompleteRequest):
     completed_orders = await crud.get_completed_orders(db=db.session, courier_id=completed_order.courier_id)
     
     periods = dict()
-    periods[completed_orders[0].region] = [round(completed_orders[0].complete_time.timestamp()) - round(completed_orders[0].assign_time.timestamp())]
+    periods[completed_orders[0].region] = [round(completed_orders[0].completed_time.timestamp()) - round(completed_orders[0].assign_time.timestamp())]
     for i, order in enumerate(completed_orders[1:]):
         if order.region not in periods.keys():
             periods[order.region] = []
-        periods[order.region].append(round(order.complete_time.timestamp()) - round(completed_orders[i-1].complete_time.timestamp()))
-    mean_periods = [sum(region_periods) / len(region_periods) for region_periods in periods]
+        periods[order.region].append(round(order.completed_time.timestamp()) - round(completed_orders[i-1].completed_time.timestamp()))
+    mean_periods = [(sum(region_periods) / len(region_periods)) for region_periods in periods.values()]
     
     rating = (60*60 - min(min(mean_periods), 60*60))/(60*60) * 5 
     earnings = 500 * schema.get_earnings_coef(courier_db.courier_type)

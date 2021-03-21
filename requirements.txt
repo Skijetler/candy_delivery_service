@@ -1,8 +1,9 @@
-orjson==3.5.1
-psycopg2-binary==2.8.6
-uvicorn==0.13.4
-fastapi==0.63.0
-sqlalchemy==1.3.23
-fastapi-sqlalchemy==0.2.1
-alembic==1.5.7
-ConfigArgParse==1.3
+orjson~=3.5.1
+psycopg2-binary~=2.8.6
+uvicorn~=0.13.4
+fastapi~=0.63.0
+sqlalchemy~=1.3.23
+fastapi-sqlalchemy~=0.2.1
+alembic~=1.5.7
+ConfigArgParse~=1.3
+setproctitle~=1.2.2

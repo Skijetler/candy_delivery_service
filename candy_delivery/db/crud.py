@@ -66,7 +66,7 @@ def check_if_in_time_periods(time_periods: List[str], in_time_periods: List[str]
 
 
 async def get_valid_orders(db: Session, regions: List[int], working_hours: List[str], max_weight: float):
-    valid_range_orders = db.query(models.Order).filter(models.Order.region._in(regions), 
+    valid_range_orders = db.query(models.Order).filter(models.Order.region.in_(regions), 
                                                        models.Order.assign_time == None,
                                                        models.Order.weight <= max_weight
                                                        )
