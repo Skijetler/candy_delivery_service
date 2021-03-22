@@ -1,0 +1,23 @@
+version: "3.4"
+services:
+  postgres:
+    restart: always
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: {{ candy_delivery_db_user }}
+      POSTGRES_PASSWORD: {{ candy_delivery_db_password }}
+      POSTGRES_DB: {{ candy_delivery_db_dbname }}
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+
+   candy_delivery:
+    restart: always
+    image: {{ candy_delivery_image }}
+    command: candy_delivery-api
+    ports:
+      - "8080:{{ candy_delivery_port }}"
+    environment:
+      CANDY_DELIVERY_DB_URL: postgresql://{{ candy_delivery_db_user }}:{{ candy_delivery_db_password }}@postgres/{{ candy_delivery_db_dbname }}
+      CANDY_DELIVERY_PORT: {{ candy_delivery_port }}

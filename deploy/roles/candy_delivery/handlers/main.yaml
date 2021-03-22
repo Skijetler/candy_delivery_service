@@ -1,0 +1,6 @@
+---
+
+- name: restart candy delivery
+  service:
+      name: docker-compose@candy_delivery
+      state: restarted
