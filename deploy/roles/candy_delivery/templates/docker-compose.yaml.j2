@@ -12,7 +12,7 @@ services:
     ports:
         - "5432:5432"
 
-   candy_delivery:
+  candy_delivery:
     restart: always
     image: {{ candy_delivery_image }}
     command: candy_delivery-api

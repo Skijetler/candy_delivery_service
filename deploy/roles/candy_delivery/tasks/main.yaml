@@ -6,7 +6,7 @@
     owner: root
     group: docker
 
-- name: deploy docker-compose.yml for candy delivery app
+- name: deploy docker-compose.yaml for candy delivery app
   template:
     src: docker-compose.yaml.j2
     dest: /etc/docker/compose/candy_delivery/docker-compose.yaml
@@ -14,7 +14,7 @@
     owner: root
     group: docker
   notify:
-    - restart candy delivery
+    - restart candy_delivery
 
 - name: start & enable candy delivery service
   service:

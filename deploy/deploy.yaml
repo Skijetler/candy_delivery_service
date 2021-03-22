@@ -12,6 +12,22 @@
   roles:
     - docker
 
+- hosts: docker
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: copy docker image with service to host
+      copy:
+        src: ./candy_delivery_service_image.tar
+        dest: /root/candy_delivery_service_image.tar
+
+    - name: load container from tarball
+      docker_image:
+        name: skijetler/candy_delivery_service:1.1
+        load_path: /root/candy_delivery_service_image.tar
+        state: present
+        source: load
+
 - name: Install Candy Delivery
   hosts: api
   become: yes
