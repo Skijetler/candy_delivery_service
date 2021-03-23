@@ -45,7 +45,7 @@ docker run skijetler/candy_delivery_service:1.1 candy_delivery-api --help
 
 Как запустить тесты локально?
 --------
-Для начала нужно поднять postgres на порту `5432` и добавить пользователся `candy_man` с паролем `2fkI2Rd39C`
+Для начала нужно поднять postgres на порту `5432` и добавить пользователя `candy_man` с паролем `2fkI2Rd39C`
 ```bash
 python3 -m venv venv
 source venv/bin/activate
