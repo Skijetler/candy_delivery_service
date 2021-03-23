@@ -11,9 +11,11 @@ sudo docker build -t skijetler/candy_delivery_service:1.1 .
 cd ./deploy
 docker save -o ./candy_delivery_service_image.tar skijetler/candy_delivery_service:1.1
 ```
-Когда образ собран, можно задеплоить его на сервер
+Когда образ собран, можно задеплоить его на сервер.
+
+Добавьте список серверов в файл hosts.ini (с установленной Ubuntu) и выполните команды:
 ```bash
-export ANSIBLE_MAX_DIFF_SIZE=104857600; ansible-playbook -c paramiko -i hosts.ini --user=root deploy.yaml
+export ANSIBLE_MAX_DIFF_SIZE=104857600; ansible-playbook -i hosts.ini --user=root deploy.yaml
 ```
 По-умолчанию сервис будет доступен на порту `8080`
 
