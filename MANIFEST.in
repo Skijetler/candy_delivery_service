@@ -1,3 +1,5 @@
 include README.rst
 include requirements*.txt
-include candy/alembic.ini 
+include candy_delivery/alembic.ini
+include candy_delivery/db/alembic/*
+include candy_delivery/db/alembic/**/*
